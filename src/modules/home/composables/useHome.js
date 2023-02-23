@@ -3,13 +3,14 @@ import { home } from "../store/home"
 
 export const useHome  = () => {
     
-    const { isDarkMode } = storeToRefs(home())
+    const { isDarkMode, isActiveChat } = storeToRefs(home())
     
     const { checkDarkMode, setDarkMode } = home()
 
     return {
         isDarkMode,
         checkDarkMode,
-        setDarkMode
+        setDarkMode,
+        isActiveChat
     }
 }

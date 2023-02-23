@@ -1,10 +1,7 @@
-<script>
+<script setup>
 import { onMounted } from 'vue'
 import { useAuth } from './modules/auth/composables/useAuth'
 import { useHome } from './modules/home/composables/useHome'
-
-export default{
-  setup(){
 
     const {
       setUser
@@ -26,9 +23,6 @@ export default{
         setUser()
         checkDarkMode()
     })
-  }
-}
-
 </script>
 
 <template>

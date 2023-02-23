@@ -6,7 +6,8 @@ let MyBoolean =(saveMode === 'true' )
 
 export const home = defineStore('home', {
     state:() => ({
-        darkMode: false
+        darkMode: false,
+        activeChat: true
     }),
     actions: {
         setDarkMode(){
@@ -24,6 +25,9 @@ export const home = defineStore('home', {
     getters: {
         isDarkMode(){
             return this.darkMode
+        },
+        isActiveChat(){
+            return this.activeChat
         }
     }
 })

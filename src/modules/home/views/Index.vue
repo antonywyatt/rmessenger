@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container mx-auto md:px-10 px-4">
         <h1>Chat</h1>
         <p>{{ isUser.email }}</p>
         <button @click="setDarkMode()">darkMode</button>
