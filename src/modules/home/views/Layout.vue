@@ -1,10 +1,12 @@
 <template>
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap min-h-screen dark:bg-zinc-900">
         <History 
             :is-active-chat="isActiveChat"
             :open-history="open"/>
-        <div class="w-full md:w-3/4 bg-zinc-500">
-            <router-view></router-view>
+        <div class="w-full md:w-3/4">
+            <div class="container mx-auto md:px-10 px-4 h-screen ">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>
