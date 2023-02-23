@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full px-2 py-4">
+    <div class="w-full px-2 py-4 sticky top-0">
         <div class=" flex justify-between items-center">
             <div class="flex space-x-2">
                 <h1 class="font-black text-xl text-zinc-700 dark:text-zinc-200">Chats</h1>

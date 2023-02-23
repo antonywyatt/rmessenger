@@ -19,6 +19,23 @@ export const chat = defineStore('chat', {
 
             this.chat_history = history
         },
+        async postConvesation( group ){
+            const { data, error } = await supabase
+                .from('groups')
+                .insert([group])
+                .select()
+
+            const { data: conversation } = await supabase
+                .from('conversation')
+                .insert([{group_id: data[0]?.id}])
+                .select()
+
+            const { data: history } = await supabase
+                .from('history')
+                .insert([{user_id: user?.user.id,group_id: data[0]?.id, last_message: 'Chat online'}])
+
+            return conversation;
+        },
         async checkHistory(){
             supabase
             .channel('any')
