@@ -3,15 +3,17 @@ import { auth } from "../store/auth"
 
 export const useAuth  = () => {
     
-    const { isUser, user, ui } = storeToRefs(auth())
+    const { isUser, user, isUsuario, usuario, exists } = storeToRefs(auth())
     
     const { checkAuth, setUser } = auth()
 
     return {
         isUser,
         user,
-        ui,
+        exists,
         checkAuth,
-        setUser
+        setUser,
+        isUsuario,
+        usuario
     }
 }

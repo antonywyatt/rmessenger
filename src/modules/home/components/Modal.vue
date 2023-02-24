@@ -1,31 +1,13 @@
 <template>
     <Transition name="fade">
       <div
-            v-if="showing"
-            @dblclick.self="close()"
-            class="fixed inset-0 w-full h-full z-20 bg-semi-75 duration-300 overflow-y-auto"
-            x-transition:enter="transition duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            >
-            <div class="relative sm:w-3/4 md:w-1/2 lg:w-1/3 mx-2 sm:mx-auto mt-20 mb-10 opacity-100 p-4 bg-white dark:bg-zinc-900 rounded-lg border dark:border-zinc-800">
-                <div
-                class="relative z-20"
-                x-transition:enter="transition transform duration-300"
-                x-transition:enter-start="scale-0"
-                x-transition:enter-end="scale-100"
-                x-transition:leave="transition transform duration-300"
-                x-transition:leave-start="scale-100"
-                x-transition:leave-end="scale-0"
-                >
-
-                <slot />
-                </div>
-            </div>
-        </div>
+          v-show="showing"
+          @dblclick.self="close()"
+          class="absolute z-50 w-full bg-black bg-opacity-30 h-screen backdrop-blur-sm top-0 left-0 flex justify-center px-8">
+          <div v-if="showing" class="bg-white rounded-lg self-start mt-32 w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+              <slot />
+          </div>
+      </div>
   </Transition>
 </template>
  

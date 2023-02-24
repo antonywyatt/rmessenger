@@ -10,11 +10,8 @@
                 </button>
             </div>
             <button>
-                <img class="rounded-full h-8" :src="isUser.avatar_url"/>
+                <img v-if="isUser.avatar_url" class="rounded-full h-8" :src="isUser.avatar_url"/>
             </button>
-        </div>
-        <div class="mt-4">
-            <button @click="onNewChat()" class="bg-teal-500 dark:bg-teal-700 shadow-md shadow-teal-100 dark:shadow-none rounded-md text-white w-full py-2 hover:bg-teal-600"><fa icon="pen-to-square"/> Nuevo chat</button>
         </div>
     </div>
 </template>
