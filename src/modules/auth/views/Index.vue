@@ -29,7 +29,7 @@ const isLoading = ref(false)
 
 const onGoogle = async () => {
     isLoading.value = true
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data: user, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
         })
     }

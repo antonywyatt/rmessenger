@@ -22,11 +22,6 @@
 <script setup>
 import { useAuth } from '../../../auth/composables/useAuth';
 import { useHome } from '../../composables/useHome';
-const emits = defineEmits(['new_chat'])
-
-const onNewChat = () => {
-    emits('new_chat')
-}
 
 const {
     isUser
