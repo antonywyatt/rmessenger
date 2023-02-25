@@ -117,7 +117,6 @@ import { useSalas } from '../composables/useSalas';
 import Index from './Index.vue';
 
 const router = useRouter()
-const chat_existe = ref(false)
 
 const {
     isActiveChat,
@@ -125,7 +124,8 @@ const {
     user_select,
     selectUser,
     createSala,
-    watchRealtime
+    watchRealtime,
+    chat_existe
 } = useHome()
 
 const query = ref('')
@@ -186,6 +186,7 @@ const onCreate = async () => {
                 user_select.value = {i: false}
                 usuarios.value = []
                 localStorage.setItem('_c_', item.sala_id )
+                active_sala.value = item.sala_id
                 chat_existe.value = true
             }else{
                 //doble sala para mi y destino
@@ -195,6 +196,7 @@ const onCreate = async () => {
                     user_select.value = {i: false}
                     usuarios.value = []
                     localStorage.setItem('_c_', resp[0]?.sala_id )
+                    active_sala.value = resp[0]?.sala_id 
                     chat_existe.value = true
                 })
             }
@@ -207,6 +209,7 @@ const onCreate = async () => {
             user_select.value = {i: false}
             usuarios.value = []
             localStorage.setItem('_c_', resp[0]?.sala_id )
+            active_sala.value = resp[0]?.sala_id 
             chat_existe.value = true
         })
     }
@@ -247,6 +250,7 @@ onMounted(() => {
         watchRealtime(0)
     }else{
         chat_existe.value = true
+        active_sala.value = chat_id
         watchRealtime(chat_id)
     }
 })

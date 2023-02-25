@@ -8,7 +8,7 @@ const data = JSON.parse(localStorage.getItem('sb-wxqaxhncvezwvdtylsly-auth-token
 
 export const useHome  = () => {
     
-    const { isDarkMode, isActiveChat, new_chat, user_select } = storeToRefs(home())
+    const { isDarkMode, isActiveChat, new_chat, user_select,chat_existe } = storeToRefs(home())
     const { checkDarkMode, setDarkMode, selectUser, createSala } = home()
 
     const { salas: isSalas } = storeToRefs(salas())
@@ -34,7 +34,8 @@ export const useHome  = () => {
                             read: payload.new.read,
                             read_time: payload.new.read_time,
                             tipo: payload.new.tipo,
-                            url: payload.new.url
+                            url: payload.new.url,
+                            created_at: payload.new.created_at
                         })
                     }else{
                         getMensajes()
@@ -72,6 +73,7 @@ export const useHome  = () => {
         user_select,
         selectUser,
         createSala,
-        watchRealtime
+        watchRealtime,
+        chat_existe
     }
 }

@@ -67,6 +67,7 @@ export const auth = defineStore('auth', {
             this.isAuth = false
             this.user = {}
             localStorage.removeItem('sb-wxqaxhncvezwvdtylsly-auth-token')
+            localStorage.removeItem('_c_')
             window.location.href = '/auth'
         },
         async searchUser(query){
