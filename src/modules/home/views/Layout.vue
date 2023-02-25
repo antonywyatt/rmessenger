@@ -160,7 +160,9 @@ const onSubmit = async () => {
     await postUsuario().then(resp => {
         if(resp.error == null){
             exists.value = true
+            window.location.reload()
         }else{
+            exists.value = false
             isLoading.value = false
             errorMsg.value = true
         }

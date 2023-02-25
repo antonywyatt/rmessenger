@@ -56,7 +56,7 @@ export const auth = defineStore('auth', {
                     user_id: data.user.id
                 }])
                 .select('*')
-
+    
             return {
                 new_user, 
                 error

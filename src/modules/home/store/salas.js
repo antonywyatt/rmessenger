@@ -19,7 +19,6 @@ export const salas = defineStore('salas', {
         selectSala(sala_id){
             localStorage.setItem('_c_', sala_id)
             this.active_sala = sala_id
-            return true
         }
     },
     getters: {
