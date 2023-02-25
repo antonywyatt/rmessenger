@@ -110,6 +110,7 @@ import { useAuth } from '../../auth/composables/useAuth';
 import History from '../components/History.vue';
 import Modal from '../components/Modal.vue';
 import { useHome } from '../composables/useHome';
+import { useSalas } from '../composables/useSalas';
 
 const router = useRouter()
 
@@ -130,6 +131,10 @@ const {
     searchUser,
     usuarios
 } = useAuth()
+
+const {
+    isSalas
+} = useSalas()
 
 const open = ref(false)
 const isLoading = ref(false)
@@ -166,14 +171,35 @@ const onSearch = async () => {
 
 
 const onCreate = async () => {
-    //doble sala para mi y destino
-    await createSala(usuario.value).then(resp => {
-        new_chat.value = false
-        query.value = '',
-        user_select.value = {i: false}
-        usuarios.value = []
-        router.push(`/${resp[0].id}`)
-    })
+    if(isSalas.value.length){
+        isSalas.value.map(async item => {
+            if(user_select.value.username === item.username){
+                new_chat.value = false
+                query.value = '',
+                user_select.value = {i: false}
+                usuarios.value = []
+                router.push(`/${item.id}`)
+            }else{
+                //doble sala para mi y destino
+                await createSala(usuario.value).then(resp => {
+                    new_chat.value = false
+                    query.value = '',
+                    user_select.value = {i: false}
+                    usuarios.value = []
+                    router.push(`/${resp[0].id}`)
+                })
+            }
+        })
+    }else{
+        //doble sala para mi y destino
+        await createSala(usuario.value).then(resp => {
+            new_chat.value = false
+            query.value = '',
+            user_select.value = {i: false}
+            usuarios.value = []
+            router.push(`/${resp[0].id}`)
+        })
+    }
 }
 
 watch(
