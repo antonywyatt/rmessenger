@@ -100,6 +100,7 @@
             <div v-if="chat_existe" class="container mx-auto md:px-10 px-4 h-screen ">
                 <Chat />
             </div>
+            <Index v-else />
         </div>
     </div>
 </template>
@@ -113,6 +114,7 @@ import Modal from '../components/Modal.vue';
 import Chat from '../pages/Chat.vue';
 import { useHome } from '../composables/useHome';
 import { useSalas } from '../composables/useSalas';
+import Index from './Index.vue';
 
 const router = useRouter()
 const chat_existe = ref(false)
@@ -137,7 +139,8 @@ const {
 } = useAuth()
 
 const {
-    isSalas
+    isSalas,
+    active_sala
 } = useSalas()
 
 const open = ref(false)
@@ -230,10 +233,18 @@ watch(
     }
 )
 
+watch(
+    () => active_sala.value,
+    () => {
+        watchRealtime(active_sala.value)
+    }
+)
+
 onMounted(() => {
     const chat_id = localStorage.getItem('_c_')
     if(!chat_id){
         chat_existe.value = false
+        watchRealtime(0)
     }else{
         chat_existe.value = true
         watchRealtime(chat_id)

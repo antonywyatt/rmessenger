@@ -1,7 +1,7 @@
 <template>
     <div v-if="isSalas.length" class="">
         <div v-for="sala in isSalas" :key="sala">
-                <div class="flex flex-wrap border-b py-2 px-4 hover:bg-zinc-100 dark:hover:bg-zinc-900 dark:border-zinc-700">     
+                <div @click="selectSala(sala.sala_id)" class="flex flex-wrap cursor-default border-b py-2 px-4 hover:bg-zinc-100 dark:hover:bg-zinc-900 dark:border-zinc-700">     
                     <div class="w-2/3">
                         <h1 class="font-medium dark:text-white">{{ sala.username }}</h1>
                         <p class="text-sm text-zinc-500">{{ sala.sala.text }}</p>
@@ -21,6 +21,7 @@ import { useSalas } from '../../composables/useSalas';
 const {
     getSalas,
     isSalas,
+    selectSala
 } = useSalas()
 
 onMounted(() => {

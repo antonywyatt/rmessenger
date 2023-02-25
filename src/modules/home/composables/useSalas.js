@@ -3,13 +3,14 @@ import { salas } from "../store/salas"
 
 export const useSalas  = () => {
     
-    const { salas: isSalas } = storeToRefs(salas())
+    const { salas: isSalas, active_sala } = storeToRefs(salas())
     
-    const { getSalas, watchSalas } = salas()
+    const { getSalas, selectSala } = salas()
 
     return {
         isSalas,
         getSalas,
-        watchSalas,
+        selectSala,
+        active_sala
     }
 }

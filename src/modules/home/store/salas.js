@@ -6,6 +6,7 @@ const data = JSON.parse(localStorage.getItem('sb-wxqaxhncvezwvdtylsly-auth-token
 export const salas = defineStore('salas', {
     state: () => ({
         salas: [],
+        active_sala: 0
     }),
     actions: {
         async getSalas(){
@@ -15,29 +16,10 @@ export const salas = defineStore('salas', {
                 .eq('user_id', data.user.id)
             this.salas = salas
         },
-        async watchSalas(){
-            const salaUsuarios = supabase.channel('custom-all-channel')
-                .on(
-                    'postgres_changes',
-                    { event: '*', schema: 'public', table: 'sala_usuarios', filter: `user_id=eq.${data.user.id}` },
-                    (payload) => {
-                        console.log(payload)
-                        if(payload.eventType === 'INSERT'){
-                            this.salas.push({
-                                id: payload.new.id,
-                                sala_id: payload.new.sala_id,
-                                username: payload.new.username,
-                                sala: {
-                                    text: 'aún no hay mensajes',
-                                    created_at: payload.new.created_at
-                                }
-                            })
-                        }else{
-                            this.getSalas()
-                        }
-                    }
-                )
-            .subscribe()
+        selectSala(sala_id){
+            localStorage.setItem('_c_', sala_id)
+            this.active_sala = sala_id
+            return true
         }
     },
     getters: {

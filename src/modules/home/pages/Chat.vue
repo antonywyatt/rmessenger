@@ -15,23 +15,28 @@
 import { onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import {useMessage} from '../composables/useMessage'
+import { useSalas } from '../composables/useSalas';
 
 const route = useRoute()
+
+const {
+    active_sala
+} = useSalas()
 
 const {
     getMensajes,
     mensajes,
     mensaje,
-    sendMensaje
+    sendMensaje,
 } = useMessage()
 
-// watch(
-//     () => route.path,
-//     () => {
-//         mensaje.value.sala_id = localStorage.getItem('_c_')
-//         getMensajes(localStorage.getItem('_c_'))
-//     }
-// )
+watch(
+    () => active_sala.value,
+    () => {
+        mensaje.value.sala_id = active_sala.value
+        getMensajes(active_sala.value)
+    }
+)
 
 onMounted(() => {
     getMensajes(localStorage.getItem('_c_'))
