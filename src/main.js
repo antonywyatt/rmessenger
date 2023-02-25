@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(far, fas, fab)
 
 import './style.css'
+import 'animate.css'
 
 createApp(App)
     .component('fa', FontAwesomeIcon)

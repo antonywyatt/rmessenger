@@ -29,10 +29,9 @@ export const auth = defineStore('auth', {
                     this.exists = false
                     this.usuario.username = generateRandomString(15)
                     this.usuario.photo = data.user.user_metadata.avatar_url
-                    console.log(this.usuario)
                 }else{
                     this.exists = true
-                    this.usuario = usuario
+                    this.usuario = usuario[0]
                 }
             }
 
@@ -47,6 +46,20 @@ export const auth = defineStore('auth', {
                 return false
             }
         },
+        async postUsuario(){
+            const { data: new_user , error } = await supabase
+                .from('usuarios')
+                .insert([{
+                    ...this.usuario, 
+                    user_id: data.user.id
+                }])
+                .select('*')
+
+            return {
+                new_user, 
+                error
+            }
+        }
     },
     getters: {
         isUser(){

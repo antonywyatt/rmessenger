@@ -5,7 +5,7 @@ export const useAuth  = () => {
     
     const { isUser, user, isUsuario, usuario, exists } = storeToRefs(auth())
     
-    const { checkAuth, setUser } = auth()
+    const { checkAuth, setUser, postUsuario } = auth()
 
     return {
         isUser,
@@ -14,6 +14,7 @@ export const useAuth  = () => {
         checkAuth,
         setUser,
         isUsuario,
-        usuario
+        usuario,
+        postUsuario
     }
 }

@@ -5,25 +5,47 @@
         <div class="space-y-2 p-4">
             <div class="text-center">
                 <h1 class="text-xl font-black text-zinc-800">Activemos tu usuario</h1>
-                <p class="text-sm text-zinc-500">Complete este formulario y listo 😁</p>
+                <p class="text-sm text-zinc-500">¿Cómo quieres que te llamemos? 😁</p>
             </div>
-            <form action="" class="pt-2">
-                <div class="space-y-1">
-                    <label for="" class="text-xs mx-2">Username</label>
-                    <input v-model="usuario.username" 
-                        type="text" 
-                        placeholder="Username" 
-                        title="Con este usuario te encontraran tus amigos"
-                        class="w-full px-2 py-2 outline-none bg-zinc-100 rounded-md">
+            <Transition
+            name="slide-fade"
+            mode="out-in">
+                <div v-if="!isLoading">
+                    <form @submit.prevent="onSubmit()" class="pt-2">
+                        <div class="space-y-1">
+                            <label for="" class="text-xs mx-2">Username <span class="text-rose-500">{{ error ? 'Máx. 15 caracteres' : '' }}</span></label>
+                            <input 
+                                required
+                                v-model="usuario.username" 
+                                type="text" 
+                                placeholder="Username" 
+                                @keypress="ValidarNumero"
+                                title="Con este usuario te encontraran tus amigos"
+                                :class="{'ring-2 ring-rose-500' : error || errorMsg}"
+                                class="w-full px-2 py-2 border outline-none bg-zinc-100 rounded-md">
+                            <p v-if="errorMsg" class="text-xs text-red-500">Este usuario ya éxiste</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label for="" class="text-xs mx-2">Estado</label>
+                            <textarea 
+                                v-model="usuario.status" 
+                                type="text" 
+                                placeholder="¿En que piensas?" 
+                                class="border w-full px-2 py-2 outline-none bg-zinc-100 rounded-md"></textarea>
+                        </div>
+                        <div class="mt-2">
+                            <button
+                                :class="{'opacity-50' : error || errorMsg}"
+                                :disabled="error || errorMsg" 
+                                class="w-full bg-black hover:bg-zinc-900 text-white rounded-md py-2">Activar <fa icon="check-circle"/></button>
+                        </div>
+                    </form>
                 </div>
-                <div class="space-y-1">
-                    <label for="" class="text-xs mx-2">Estado</label>
-                    <textarea v-model="usuario.status" type="text" placeholder="Username" class="w-full px-2 py-2 outline-none bg-zinc-100 rounded-md"></textarea>
+                <div v-else class="text-center py-8 space-y-3">
+                    <fa icon="spinner" class="text-3xl text-zinc-300 animate-spin"/>
+                    <p class="text-zinc-500 text-xs">No tardaremos nada...</p>
                 </div>
-                <div class="mt-2">
-                    <button class="w-full bg-black text-white rounded-md py-2">Activar <fa icon="check-circle"/></button>
-                </div>
-            </form>
+            </Transition>
         </div>
     </Modal>
     <div class="flex flex-wrap min-h-screen dark:bg-zinc-900">
@@ -39,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useAuth } from '../../auth/composables/useAuth';
 import History from '../components/History.vue';
 import Modal from '../components/Modal.vue';
@@ -51,9 +73,64 @@ const {
 
 const {
     exists,
-    usuario
+    usuario,
+    postUsuario
 } = useAuth()
 
 const open = ref(false)
+const isLoading = ref(false)
+const error = ref(false)
+const errorMsg = ref(false)
+
+
+const ValidarNumero = (e) =>{
+	if(e.keyCode == 32 || usuario.value.username.length > 15){
+        e.preventDefault()
+    }
+}
+
+const onSubmit = async () => {
+    isLoading.value = true
+    await postUsuario().then(resp => {
+        if(resp.error == null){
+            exists.value = true
+        }else{
+            isLoading.value = false
+            errorMsg.value = true
+        }
+    }).catch(err => {
+        isLoading.value = false
+        errorMsg.value = true
+    })
+}
+
+watch(
+    () => usuario.value.username,
+    () => {
+        if(usuario.value.username?.length > 15) {
+            error.value = true 
+        }else{
+            error.value = false
+        }
+        errorMsg.value = false
+    }
+)
+
 
 </script>
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+</style>
