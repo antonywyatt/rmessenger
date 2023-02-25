@@ -1,7 +1,7 @@
 <template>
     <div v-if="isSalas.length" class="">
         <div v-for="sala in isSalas" :key="sala">
-                <div @click="selectSala(sala.sala_id), chat_existe = true" 
+                <div @click="selectSala(sala.sala_id), chat_existe = true, openSidebar = false" 
                     :class="{'bg-zinc-100 dark:bg-zinc-900' : sala.sala_id == active_sala}"
                     class="flex flex-wrap cursor-default border-b py-2 px-4 hover:bg-zinc-100 dark:hover:bg-zinc-900 dark:border-zinc-700">     
                     <div class="w-2/3">
@@ -29,7 +29,8 @@ const {
 } = useSalas()
 
 const {
-    chat_existe
+    chat_existe,
+    openSidebar
 } = useHome()
 
 onMounted(() => {

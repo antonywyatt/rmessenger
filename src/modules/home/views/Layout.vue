@@ -94,13 +94,13 @@
     <div class="flex flex-wrap min-h-screen dark:bg-zinc-900">
         <History 
             :is-active-chat="isActiveChat"
-            :open-history="open"
+            :open-history="openSidebar"
             />
         <div class="w-full md:w-2/3">
             <div v-if="chat_existe" class="container mx-auto md:px-10 px-4 h-screen ">
                 <Chat />
             </div>
-            <Index v-else />
+            <Index v-else @open-sidebar="open = true"/>
         </div>
     </div>
 </template>
@@ -125,7 +125,8 @@ const {
     selectUser,
     createSala,
     watchRealtime,
-    chat_existe
+    chat_existe,
+    openSidebar
 } = useHome()
 
 const query = ref('')
@@ -143,7 +144,6 @@ const {
     active_sala
 } = useSalas()
 
-const open = ref(false)
 const isLoading = ref(false)
 const error = ref(false)
 const errorMsg = ref(false)
@@ -240,6 +240,7 @@ watch(
     () => active_sala.value,
     () => {
         watchRealtime(active_sala.value)
+        openSidebar.value = false
     }
 )
 
@@ -248,10 +249,12 @@ onMounted(() => {
     if(!chat_id){
         chat_existe.value = false
         watchRealtime(0)
+        openSidebar.value = false
     }else{
         chat_existe.value = true
         active_sala.value = chat_id
         watchRealtime(chat_id)
+        openSidebar.value = false
     }
 })
 

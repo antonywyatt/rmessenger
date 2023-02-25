@@ -11,6 +11,7 @@ export const home = defineStore('home', {
         activeChat: true,
         new_chat: false,
         chat_existe: false,
+        openSidebar: false,
         user_select: {
             i: false
         }

@@ -5,21 +5,24 @@
                 <div v-if="mensajes.length">
                     <div v-for="mensaje in mensajes" :key="mensaje" :class="{'flex justify-end' : isUsuario.user_id == mensaje.user_id}" class="flex justify-start">
                         <Mensaje 
-                            :mensaje="mensaje"  
-                            :is-usuario="isUsuario"  
+                        :mensaje="mensaje"  
+                        :is-usuario="isUsuario"  
                         />
                     </div>
                 </div>
             </div>
             <form @submit.prevent="sendMensaje()" class="flex bg-zinc-100 dark:bg-zinc-800 px-4 rounded-md space-x-2 py-4">
                 <input 
-                    type="text" 
-                    required 
-                    v-model="mensaje.mensaje" 
-                    class="w-full p-2 outline-none dark:bg-zinc-900 dark:text-white border-b-2 rounded-md dark:border-zinc-700 dark:focus:border-emerald-500 focus:border-emerald-500"
-                    placeholder="Escribe un mensaje">
+                type="text" 
+                required 
+                v-model="mensaje.mensaje" 
+                class="w-full p-2 outline-none dark:bg-zinc-900 dark:text-white border-b-2 rounded-md dark:border-zinc-700 dark:focus:border-emerald-500 focus:border-emerald-500"
+                placeholder="Escribe un mensaje">
                 <button class="bg-black text-white px-2 rounded-md">Enviar</button>
             </form>
+            <div class="flex md:hidden top-0 w-full p-2 py-4 bg-white dark:bg-zinc-900">
+                <button @click="openSidebar = true" class="bg-black py-2 text-white px-2 rounded-md"><fa icon="arrow-left"/></button>
+            </div>
         </div>
     </div>
 </template>
@@ -30,6 +33,7 @@ import {useMessage} from '../composables/useMessage'
 import { useSalas } from '../composables/useSalas';
 import Mensaje from './Mensaje.vue';
 import { useAuth } from '../../auth/composables/useAuth';
+import { useHome } from '../composables/useHome';
 
 const {
     active_sala
@@ -43,6 +47,10 @@ const {
     mensaje,
     sendMensaje,
 } = useMessage()
+
+const {
+    openSidebar
+} = useHome()
 
 const downScroll = () => {
     if(refChat.value){

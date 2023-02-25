@@ -14,15 +14,22 @@ export const messages = defineStore('messages', {
     }),
     actions: {
         async getMensajes(sala_id){
+            this.mensajes = []
             const {data, error} = await supabase
                 .from('mensaje')
-                .select('mensaje, user_id,read , read_time, tipo, url, created_at')
+                .select('id, mensaje, user_id,read , read_time, tipo, url, created_at')
                 .order('created_at', {
-                    ascending: true,
+                    ascending: false,
                 })
+                .range(0, 5)
                 .eq('sala_id', sala_id)
 
-            this.mensajes = data
+            for(let i = data.length; 0 <= i; i--){
+                if(data[i] !== undefined){
+                    this.mensajes.push(data[i])
+                }
+            }
+
         },
         async sendMensaje(){
             const {data, error} = await supabase
