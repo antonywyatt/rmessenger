@@ -5,7 +5,7 @@ export const useHome  = () => {
     
     const { isDarkMode, isActiveChat, new_chat, user_select } = storeToRefs(home())
     
-    const { checkDarkMode, setDarkMode, selectUser } = home()
+    const { checkDarkMode, setDarkMode, selectUser, createSala } = home()
 
     return {
         new_chat,
@@ -14,6 +14,7 @@ export const useHome  = () => {
         setDarkMode,
         isActiveChat,
         user_select,
-        selectUser
+        selectUser,
+        createSala
     }
 }

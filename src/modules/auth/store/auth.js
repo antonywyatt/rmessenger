@@ -24,7 +24,7 @@ export const auth = defineStore('auth', {
             if(data){
                 const {data: usuario, error} = await supabase
                     .from('usuarios')
-                    .select('username, active, status, photo')
+                    .select('user_id, username, active, status, photo')
                     .eq('user_id', data.user.id)
 
                 if(!usuario.length){
@@ -72,7 +72,7 @@ export const auth = defineStore('auth', {
         async searchUser(query){
             const { data, error } = await supabase
                 .from('usuarios')
-                .select('id, username, status')
+                .select('user_id, username, status')
                 .ilike('username', `%${query}%`)
                 .neq('username', this.usuario.username)
                 .limit(5)

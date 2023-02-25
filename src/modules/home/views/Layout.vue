@@ -83,6 +83,7 @@
                 <button
                     :class="{'opacity-50' : user_select.i == false}"
                     :disabled="user_select.i == false"
+                    @click="onCreate()"
                     class="bg-black hover:bg-zinc-900 text-white w-full py-2 rounded-md">
                     <fa icon="user-plus"/> Invitar al chat
                 </button>
@@ -104,16 +105,20 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuth } from '../../auth/composables/useAuth';
 import History from '../components/History.vue';
 import Modal from '../components/Modal.vue';
 import { useHome } from '../composables/useHome';
 
+const router = useRouter()
+
 const {
     isActiveChat,
     new_chat,
     user_select,
-    selectUser
+    selectUser,
+    createSala
 } = useHome()
 
 const query = ref('')
@@ -157,6 +162,18 @@ const onSearch = async () => {
     if(query.value.length >= 3){
         await searchUser(query.value)
     }
+}
+
+
+const onCreate = async () => {
+    //doble sala para mi y destino
+    await createSala(usuario.value).then(resp => {
+        new_chat.value = false
+        query.value = '',
+        user_select.value = {i: false}
+        usuarios.value = []
+        router.push(`/${resp[0].id}`)
+    })
 }
 
 watch(
