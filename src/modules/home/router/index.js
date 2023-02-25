@@ -1,5 +1,4 @@
 import Index from '../views/Index.vue'
-import Chat from '../pages/Chat.vue'
 
 
 export default {
@@ -10,11 +9,6 @@ export default {
             name: 'home',
             path: '/',
             component: Index
-        },
-        {
-            name: 'chat',
-            path: '/:chat_id',
-            component: Chat
         }
     ],
 }

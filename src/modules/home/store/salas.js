@@ -5,7 +5,7 @@ const data = JSON.parse(localStorage.getItem('sb-wxqaxhncvezwvdtylsly-auth-token
 
 export const salas = defineStore('salas', {
     state: () => ({
-        salas: []
+        salas: [],
     }),
     actions: {
         async getSalas(){
@@ -21,6 +21,7 @@ export const salas = defineStore('salas', {
                     'postgres_changes',
                     { event: '*', schema: 'public', table: 'sala_usuarios', filter: `user_id=eq.${data.user.id}` },
                     (payload) => {
+                        console.log(payload)
                         if(payload.eventType === 'INSERT'){
                             this.salas.push({
                                 id: payload.new.id,
@@ -40,6 +41,5 @@ export const salas = defineStore('salas', {
         }
     },
     getters: {
-
     }
 })

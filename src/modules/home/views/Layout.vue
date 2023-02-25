@@ -94,32 +94,36 @@
     <div class="flex flex-wrap min-h-screen dark:bg-zinc-900">
         <History 
             :is-active-chat="isActiveChat"
-            :open-history="open"/>
+            :open-history="open"
+            />
         <div class="w-full md:w-2/3">
-            <div class="container mx-auto md:px-10 px-4 h-screen ">
-                <router-view></router-view>
+            <div v-if="chat_existe" class="container mx-auto md:px-10 px-4 h-screen ">
+                <Chat />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '../../auth/composables/useAuth';
 import History from '../components/History.vue';
 import Modal from '../components/Modal.vue';
+import Chat from '../pages/Chat.vue';
 import { useHome } from '../composables/useHome';
 import { useSalas } from '../composables/useSalas';
 
 const router = useRouter()
+const chat_existe = ref(false)
 
 const {
     isActiveChat,
     new_chat,
     user_select,
     selectUser,
-    createSala
+    createSala,
+    watchRealtime
 } = useHome()
 
 const query = ref('')
@@ -178,7 +182,8 @@ const onCreate = async () => {
                 query.value = '',
                 user_select.value = {i: false}
                 usuarios.value = []
-                router.push(`/${item.id}`)
+                localStorage.setItem('_c_', item.sala_id )
+                chat_existe.value = true
             }else{
                 //doble sala para mi y destino
                 await createSala(usuario.value).then(resp => {
@@ -186,7 +191,8 @@ const onCreate = async () => {
                     query.value = '',
                     user_select.value = {i: false}
                     usuarios.value = []
-                    router.push(`/${resp[0].id}`)
+                    localStorage.setItem('_c_', resp[0]?.sala_id )
+                    chat_existe.value = true
                 })
             }
         })
@@ -197,7 +203,8 @@ const onCreate = async () => {
             query.value = '',
             user_select.value = {i: false}
             usuarios.value = []
-            router.push(`/${resp[0].id}`)
+            localStorage.setItem('_c_', resp[0]?.sala_id )
+            chat_existe.value = true
         })
     }
 }
@@ -222,6 +229,16 @@ watch(
         }
     }
 )
+
+onMounted(() => {
+    const chat_id = localStorage.getItem('_c_')
+    if(!chat_id){
+        chat_existe.value = false
+    }else{
+        chat_existe.value = true
+        watchRealtime(chat_id)
+    }
+})
 
 
 </script>

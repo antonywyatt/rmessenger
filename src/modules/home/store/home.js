@@ -56,7 +56,7 @@ export const home = defineStore('home', {
             const {data: sala } = await supabase
                 .from('sala_usuarios')
                 .insert(salas_array)
-                .select('id')
+                .select('*')
 
             return sala
         }

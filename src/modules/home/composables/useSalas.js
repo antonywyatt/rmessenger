@@ -10,6 +10,6 @@ export const useSalas  = () => {
     return {
         isSalas,
         getSalas,
-        watchSalas
+        watchSalas,
     }
 }

@@ -16,7 +16,8 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
+import { useSalas } from '../composables/useSalas';
 import Header from './History/Header.vue';
 import MySalas from './History/MySalas.vue';
 import NewChat from './History/NewChat.vue';
@@ -28,8 +29,13 @@ const props = defineProps({
     openHistory: Boolean
 })
 
+const {
+} = useSalas()
 
 const isLoading = ref(false)
 const openModal = ref(false)
+
+onMounted(() => {
+})
 
 </script>
