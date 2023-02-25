@@ -22,7 +22,7 @@
                                 @keypress="ValidarNumero"
                                 title="Con este usuario te encontraran tus amigos"
                                 :class="{'ring-2 ring-rose-500' : error || errorMsg}"
-                                class="w-full px-2 py-2 border outline-none bg-zinc-100 rounded-md">
+                                class="w-full px-2 py-2 border-b-2 outline-none focus:border-emerald-500 bg-zinc-100 rounded-md">
                             <p v-if="errorMsg" class="text-xs text-red-500">Este usuario ya éxiste</p>
                         </div>
                         <div class="space-y-1">
@@ -31,7 +31,7 @@
                                 v-model="usuario.status" 
                                 type="text" 
                                 placeholder="¿En que piensas?" 
-                                class="border w-full px-2 py-2 outline-none bg-zinc-100 rounded-md"></textarea>
+                                class="border-b-2 w-full focus:border-emerald-500 px-2 py-2 outline-none bg-zinc-100 rounded-md"></textarea>
                         </div>
                         <div class="mt-2">
                             <button
@@ -46,6 +46,48 @@
                     <p class="text-zinc-500 text-xs">No tardaremos nada...</p>
                 </div>
             </Transition>
+        </div>
+    </Modal>
+    <!-- new chat -->
+    <Modal
+        :showing="new_chat"
+        @close="new_chat = false">
+        <div class="p-4">
+            <h1 class="font-black dark:text-white text-lg">Nuevo chat</h1>
+            <div v-if="user_select.i == true" class="my-2 flex justify-between items-center border dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-700 p-2 rounded-md">
+                <h1 class="dark:text-white">{{ user_select.username }}</h1>
+                <button class="dark:text-white" @click="user_select.i = false, query = ''"><fa icon="xmark"/></button>
+            </div>
+            <div v-else class="my-2">
+                <input 
+                v-model="query"
+                @keyup="onSearch()"
+                type="text"
+                placeholder="Buscar amigo" 
+                class="w-full p-2 bg-zinc-100 border-b-2 dark:border-zinc-700 focus:border-emerald-500 dark:focus:border-emerald-500 dark:text-white dark:bg-zinc-900 rounded-md outline-none">
+            </div>
+            <div v-if="usuarios.length" class="absolute bg-white border dark:border-zinc-700 z-30 dark:bg-zinc-900 w-1/2 md:w-1/2 lg:w-1/4 rounded-md max-h-48 overflow-y-auto">
+                <ul class="">
+                    <li v-for="user in usuarios" :key="user" @click="selectUser(user), usuarios = []" class="flex cursor-default hover:bg-zinc-200 dark:hover:bg-zinc-700 space-x-2 px-2 items-center border-b dark:border-zinc-800 py-2">
+                        <div class="h-8 w-8 rounded-full flex justify-center items-center bg-emerald-400">
+                            <fa icon="user"/>
+                        </div>
+                        <div class="">
+                            <h1 class="font-medium dark:text-white">{{ user.username }}</h1>
+                            <p class="text-xs text-zinc-700 dark:text-zinc-600">{{ user?.status.substr(-2000, 20)}}...</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="py-2">
+                <button
+                    :class="{'opacity-50' : user_select.i == false}"
+                    :disabled="user_select.i == false"
+                    class="bg-black hover:bg-zinc-900 text-white w-full py-2 rounded-md">
+                    <fa icon="user-plus"/> Invitar al chat
+                </button>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-500">Todos los usuarios son visibles.</p>
         </div>
     </Modal>
     <div class="flex flex-wrap min-h-screen dark:bg-zinc-900">
@@ -68,13 +110,20 @@ import Modal from '../components/Modal.vue';
 import { useHome } from '../composables/useHome';
 
 const {
-    isActiveChat
+    isActiveChat,
+    new_chat,
+    user_select,
+    selectUser
 } = useHome()
+
+const query = ref('')
 
 const {
     exists,
     usuario,
-    postUsuario
+    postUsuario,
+    searchUser,
+    usuarios
 } = useAuth()
 
 const open = ref(false)
@@ -104,6 +153,12 @@ const onSubmit = async () => {
     })
 }
 
+const onSearch = async () => {
+    if(query.value.length >= 3){
+        await searchUser(query.value)
+    }
+}
+
 watch(
     () => usuario.value.username,
     () => {
@@ -113,6 +168,15 @@ watch(
             error.value = false
         }
         errorMsg.value = false
+    }
+)
+
+watch(
+    () => query.value,
+    () => {
+        if(query.value.length <= 0){
+            usuarios.value = []
+        }
     }
 )
 

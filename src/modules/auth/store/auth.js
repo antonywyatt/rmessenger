@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useRouter } from "vue-router";
 import { supabase } from '../../../supabase'
 
 import { generateRandomString } from '../../../utils/randomText'
@@ -14,7 +15,8 @@ export const auth = defineStore('auth', {
             active: false,
             status: 'I love RMessage 💜',
             photo: '',
-        }
+        },
+        usuarios: [],
     }),
     actions: {
         async setUser(){
@@ -59,6 +61,23 @@ export const auth = defineStore('auth', {
                 new_user, 
                 error
             }
+        },
+        async logout(){
+            const { error } = await supabase.auth.signOut()
+            this.isAuth = false
+            this.user = {}
+            localStorage.removeItem('sb-wxqaxhncvezwvdtylsly-auth-token')
+            window.location.href = '/auth'
+        },
+        async searchUser(query){
+            const { data, error } = await supabase
+                .from('usuarios')
+                .select('id, username, status')
+                .ilike('username', `%${query}%`)
+                .neq('username', this.usuario.username)
+                .limit(5)
+
+            this.usuarios = data
         }
     },
     getters: {

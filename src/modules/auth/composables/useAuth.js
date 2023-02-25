@@ -3,9 +3,9 @@ import { auth } from "../store/auth"
 
 export const useAuth  = () => {
     
-    const { isUser, user, isUsuario, usuario, exists } = storeToRefs(auth())
+    const { isUser, user, isUsuario, usuario, exists, usuarios } = storeToRefs(auth())
     
-    const { checkAuth, setUser, postUsuario } = auth()
+    const { checkAuth, setUser, postUsuario, logout, searchUser } = auth()
 
     return {
         isUser,
@@ -15,6 +15,9 @@ export const useAuth  = () => {
         setUser,
         isUsuario,
         usuario,
-        postUsuario
+        postUsuario,
+        logout,
+        usuarios,
+        searchUser
     }
 }

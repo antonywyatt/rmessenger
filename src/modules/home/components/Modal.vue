@@ -2,9 +2,9 @@
     <Transition name="fade">
       <div
           v-show="showing"
-          @dblclick.self="close()"
+          @click.self="close()"
           class="absolute z-50 w-full bg-black bg-opacity-30 h-screen backdrop-blur-sm top-0 left-0 flex justify-center px-8">
-          <div v-if="showing" class="bg-white rounded-lg self-start mt-32 w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+          <div v-if="showing" class="bg-white dark:bg-zinc-800 rounded-lg self-start mt-32 w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
               <slot />
           </div>
       </div>

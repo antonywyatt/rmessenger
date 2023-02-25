@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { supabase } from '../../../supabase'
 
 //apis localStorage
 const saveMode = localStorage.getItem('darkMode')
@@ -7,7 +8,11 @@ let MyBoolean =(saveMode === 'true' )
 export const home = defineStore('home', {
     state:() => ({
         darkMode: false,
-        activeChat: true
+        activeChat: true,
+        new_chat: false,
+        user_select: {
+            i: false
+        }
     }),
     actions: {
         setDarkMode(){
@@ -20,6 +25,12 @@ export const home = defineStore('home', {
             }else{
                 this.darkMode = false
             }
+        },
+        selectUser(user){
+            this.user_select = {
+                ...user,
+                i: true
+            }
         }
     },
     getters: {
@@ -28,6 +39,6 @@ export const home = defineStore('home', {
         },
         isActiveChat(){
             return this.activeChat
-        }
+        },
     }
 })
